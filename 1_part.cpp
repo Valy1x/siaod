@@ -40,7 +40,7 @@ int main() {
 	cout << "Enter byt5: ";
 	cin >> byt5;
 	cout << "byt5: " << bitset <16>(byt5) << endl;
-	byt5 = bytes & (~(line << n));
+	byt5 = byt5 & (~(line << n));
 	cout << "END: "<< bitset <16>(byt5) << " " << byt5 << endl;
 	return 0;
 }
