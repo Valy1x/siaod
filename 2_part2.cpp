@@ -13,7 +13,7 @@ int main() {
     cin >> n;
     for (int i = 0; i < n; i++) {
         cin >> num;
-        list[num / 8] |= (1 << (num % 8));
+        list[num / 8] = list[num / 8] | (1 << (num % 8));
     }
 
     cout << "Sorted nums:" << endl;
