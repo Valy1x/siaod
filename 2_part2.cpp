@@ -8,7 +8,7 @@ using namespace std;
 int main() {
     vector<unsigned char> list(8, 0);
 
-    int num, n;
+    unsigned int num, n;
     cout << "Enter number of nums: " << endl;
     cin >> n;
     for (int i = 0; i < n; i++) {
@@ -19,7 +19,7 @@ int main() {
     cout << "Sorted nums:" << endl;
     for (int i = 0; i < 64; i++) {
         if (list[i / 8] & (1 << (i % 8))) {
-            cout << i << " ";
+            cout << i;
         }
     }
 }

@@ -31,4 +31,4 @@ int main() {
 			cout << list[i];
 		}
 	}
-}
+}2nd
