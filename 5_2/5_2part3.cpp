@@ -13,7 +13,6 @@
 #include <chrono>
 #include <iomanip>
 
-
 using namespace std;
 
 struct BankAccount {
@@ -96,7 +95,6 @@ int binarySearh(const vector<TableEntry>& data, int code) {
     return -1;
 }
 
-
 bool readRecordAtOffset(const string& binaryFileName, streampos offset, BankAccount& record) {
     ifstream inFile(binaryFileName, ios::binary);
     if (!inFile) {
@@ -123,6 +121,7 @@ bool readRecordAtOffset(const string& binaryFileName, streampos offset, BankAcco
     inFile.close();
     return true;
 }
+
 void createIndexTable(const string& binaryFileName, vector<TableEntry>& TableEntrys) {
     ifstream inFile(binaryFileName, ios::binary);
     if (!inFile) {
