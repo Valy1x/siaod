@@ -71,8 +71,8 @@ int main() {
 
     write_binary_file(binary_filename, data);
 
-    cout << "\nReading binary file:" << endl;
-    read_binary_file(binary_filename);
+    // cout << "\nReading binary file:" << endl;
+    // read_binary_file(binary_filename);
 
     return 0;
 }

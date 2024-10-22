@@ -95,6 +95,7 @@ BankAccount linearSearch(string binary_filename, int looking_number, int num_acc
 }
 
 void measureSearchTime(const string& binaryFileName, int key, int numRecords) {
+    write_binary_file(binaryFileName, generate_data(numRecords));
     clock_t start = clock();
 
     BankAccount record = linearSearch(binaryFileName, key, numRecords);

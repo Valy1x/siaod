@@ -122,11 +122,10 @@ bool readRecordAtOffset(const string& binaryFileName, streampos offset, BankAcco
     return true;
 }
 
-void createIndexTable(const string& binaryFileName, vector<TableEntry>& TableEntrys) {
+vector<TableEntry> createIndexTable(const string& binaryFileName, vector<TableEntry> TableEntrys) {
     ifstream inFile(binaryFileName, ios::binary);
     if (!inFile) {
         cerr << "Ошибка открытия бинарного файла." << endl;
-        return;
     }
 
     streampos offset;
@@ -151,6 +150,7 @@ void createIndexTable(const string& binaryFileName, vector<TableEntry>& TableEnt
     }
 
     inFile.close();
+    return TableEntrys;
 }
 
 bool searchInIndexTable(const vector<TableEntry>& indexTable, int key, streampos& offset) {
@@ -163,50 +163,14 @@ bool searchInIndexTable(const vector<TableEntry>& indexTable, int key, streampos
     return false;
 }
 
-BankAccount linearSearch(string binary_filename, int looking_number, int num_accounts) {
-    ifstream binary_file(binary_filename, ios::binary);
-
-    if (!binary_file.is_open()) {
-        cerr << "Error! Can't open file." << endl;
-    }
-
-    for (int i = 0; i <= num_accounts; i++) {
-        BankAccount record;
-
-        binary_file.read(reinterpret_cast<char*>(&record.account_number), sizeof(record.account_number));
-        
-        size_t name_len;
-        binary_file.read(reinterpret_cast<char*>(&name_len), sizeof(name_len));
-        record.name.resize(name_len);
-        binary_file.read(&record.name[0], name_len);
-
-        size_t address_len;
-        binary_file.read(reinterpret_cast<char*>(&address_len), sizeof(address_len));
-        record.address.resize(address_len);
-        binary_file.read(&record.address[0], address_len);
-
-        if (record.account_number == looking_number) {
-            binary_file.close();
-            FLAG = true;
-            return record;
-        }
-    }
-    return {0, "0", "0"};
-}
-
 void measureSearchTime(const string& binaryFileName, int key, const vector<TableEntry>& indexTable, int numRecords) {
     BankAccount record;
     streampos offset;
+    write_binary_file(binaryFileName, generate_data(numRecords));
 
     auto start = chrono::high_resolution_clock::now();
 
-    bool foundInIndex = searchInIndexTable(indexTable, key, offset);
-    if (foundInIndex) {
-        readRecordAtOffset(binaryFileName, offset, record);
-    }
-    else {
-        linearSearch(binaryFileName, key, numRecords);
-    }
+    binarySearh(createIndexTable(binaryFileName, indexTable), key);
 
     auto end = chrono::high_resolution_clock::now();
     chrono::duration<double, milli> duration = end - start;
@@ -217,9 +181,7 @@ void measureSearchTime(const string& binaryFileName, int key, const vector<Table
 int main() {
     setlocale(0, "");
     string binaryFileName = "accounts.dat";
-
     vector<TableEntry> indexTable;
-    createIndexTable(binaryFileName, indexTable);
 
     int searchKey = 14866;
 
